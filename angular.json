@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "esse-aquele": {
+    "esse-ou-esse": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/esse-aquele",
+            "outputPath": "dist/esse-ou-esse",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -72,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "esse-aquele:build:production"
+              "browserTarget": "esse-ou-esse:build:production"
             },
             "development": {
-              "browserTarget": "esse-aquele:build:development"
+              "browserTarget": "esse-ou-esse:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +83,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "esse-aquele:build"
+            "browserTarget": "esse-ou-esse:build"
           }
         },
         "test": {
@@ -107,5 +107,5 @@
       }
     }
   },
-  "defaultProject": "esse-aquele"
+  "defaultProject": "esse-ou-esse"
 }
