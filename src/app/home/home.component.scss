@@ -6,7 +6,8 @@
     flex-direction: row;       
   }
 
-.card {    
+.card {   
+  cursor: pointer; 
     margin-left: 2rem;
     background-color: white;
     position: relative;    
