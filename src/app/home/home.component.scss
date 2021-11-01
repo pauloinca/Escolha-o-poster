@@ -3,30 +3,44 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
+  flex-wrap: wrap;
+  transition: 0.3s;
+  gap: calc(50px + 0.5vw);
 }
 
 .card {
   cursor: pointer;
-  // margin-left: 2rem;
   background-color: white;
   position: relative;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
   transition: 0.3s;
-  border-radius: 5px;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  transform: scale(1.1) translateZ(0);
+  box-shadow: 0 8px 16px 0 rgb(255, 255, 255);
 }
 
-.container {
-  padding: 2px 16px;
+.img-wrapper {
+  position: relative;
+  width: 500px;
+  height: 750px;
+  margin: calc(5px + 0.5vw);
+  transition: 0.3s;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: contain;
 }
 
-img {
-  background-color: yellowgreen;
-  width: 100%;
+.img-wrapper img {
+  position: relative;
   height: auto;
-  border-radius: 5px 5px 0 0;
+  width: 100%;
 }
