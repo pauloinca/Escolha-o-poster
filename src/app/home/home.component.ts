@@ -24,14 +24,15 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {    
-    this.tmdbService.getMovie().then((x: Movie) => {         
-      console.log(x.poster_path);
-      this.image1Src = `https://image.tmdb.org/t/p/w500${x.poster_path}`;       
+    this.tmdbService.getMovie().then((x: Movie[]) => {         
+      // console.log(x.poster_path);
+      this.image1Src = `https://image.tmdb.org/t/p/w500${x[0].poster_path}`;       
+      this.image2Src = `https://image.tmdb.org/t/p/w500${x[1].poster_path}`;       
     });
-    this.tmdbService.getMovie().then((x: Movie) => {         
-      console.log(x.poster_path);
-      this.image2Src = `https://image.tmdb.org/t/p/w500${x.poster_path}`;       
-    });    
+    // this.tmdbService.getMovie().then((x: Movie[]) => {         
+    //   console.log(x.poster_path);
+    //   this.image2Src = `https://image.tmdb.org/t/p/w500${x.poster_path}`;       
+    // });    
 
 
     // promise.then(x => {

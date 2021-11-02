@@ -15,7 +15,7 @@ export class TmdbService {
   url_discover =   "https://api.themoviedb.org/3/discover/movie";
   API_KEY = config.TMDB_API_KEY;
 
-  movie = {} as Movie;
+  movies: Movie[] = [];
   movie_discover = {} as MovieDiscover;
 
   // Injetando o HttpClient
@@ -50,34 +50,31 @@ export class TmdbService {
 
   async getMovie(){    
     var pageRandom = this.randomInteger(1, 500);   
-    let data = await this.getMoviesDiscoverList(pageRandom).toPromise();    
-    var movieRandom = this.randomInteger(0, 19);            
-    for(let i=0; i < movieRandom; i++){
-      if(data.results[i].poster_path != null){
-        console.log(data.results[i].id);
-        return data.results[i];
-      }
-      this.getMovie();
-    }
-    return this.movie;
+    var voteRandom = this.genRand(0, 9, 2);
+    let data = await this.getMoviesDiscoverList(pageRandom, voteRandom).toPromise();    
+    var movieRandom = this.randomInteger(0, 19);      
+    this.movies.splice(0, this.movies.length);      
+    // let dataReturn = {} as Movie[];
 
-    // var pageRandom = this.randomInteger(1, 500);    
-    // this.getMoviesDiscoverList(pageRandom). (movie_disc: MovieDiscover) => {
-    //   var movieRandom = this.randomInteger(0, 19);            
-    //   for(let i=0; i < movieRandom; i++){
-    //     if(movie_disc.results[i].poster_path != null){
-    //       console.log(movie_disc.results[i].id);
-    //       return movie_disc.results[i] as Movie;
-    //     }
-    //   }
-    //   return EMPTY;
-    // })    
-    // return EMPTY;
+    for(let i=0; i < movieRandom; i++){
+      if(this.movies.length < 2){
+        if(data.results[i].poster_path != null){
+          this.movies.push(data.results[i]);                    
+        }
+      }
+      else if(this.movies.length == 2){
+        return this.movies;
+      }
+      else{
+        this.getMovie();
+      }      
+    }
+    return this.movies;
   }
 
   // Obtem uma lista de filmes
-  getMoviesDiscoverList(page: number): Observable<MovieDiscover> {
-    return this.httpClient.get<MovieDiscover>(`${this.url_discover}?api_key=${this.API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}&vote_average.gte=8&with_watch_monetization_types=flatrate`)
+  getMoviesDiscoverList(page: number, vote: number): Observable<MovieDiscover> {
+    return this.httpClient.get<MovieDiscover>(`${this.url_discover}?api_key=${this.API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}&vote_average.gte=${vote}&with_watch_monetization_types=flatrate`)
       .pipe(
         retry(2),
         catchError(this.handleError))
@@ -143,22 +140,12 @@ export class TmdbService {
     return throwError(errorMessage);
   };
 
-  handleError2(error: HttpErrorResponse) {
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      // Erro ocorreu no lado do client
-      errorMessage = error.error.message;
-    } else {
-      // Erro ocorreu no lado do servidor
-      if(error.status == 404){
-        return of()
-      }
+  genRand(min: number, max: number, decimalPlaces: number) {  
+    var rand = Math.random()*(max-min) + min;
+    var power = Math.pow(10, decimalPlaces);
+    return Math.floor(rand*power) / power;
+  }
 
-      errorMessage = `Código do erro: ${error.status}, mensagem: ${error.message}`;
-    }
-    console.log(errorMessage);
-    return throwError(errorMessage);
-  };  
 
 
 }
