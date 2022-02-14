@@ -23,22 +23,11 @@ export class HomeComponent implements OnInit {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  ngOnInit() {    
-    this.tmdbService.getMovie().then((x: Movie[]) => {         
-      // console.log(x.poster_path);
-      this.image1Src = `https://image.tmdb.org/t/p/w500${x[0].poster_path}`;       
-      this.image2Src = `https://image.tmdb.org/t/p/w500${x[1].poster_path}`;       
+  ngOnInit() {
+    this.tmdbService.getMovie().then((x: Movie[]) => {
+      this.image1Src = `https://image.tmdb.org/t/p/w500${x[0].poster_path}`;
+      this.image2Src = `https://image.tmdb.org/t/p/w500${x[1].poster_path}`;
     });
-    // this.tmdbService.getMovie().then((x: Movie[]) => {         
-    //   console.log(x.poster_path);
-    //   this.image2Src = `https://image.tmdb.org/t/p/w500${x.poster_path}`;       
-    // });    
-
-
-    // promise.then(x => {
-    //   console.log("B");
-    //   console.log(x);
-    // })
 
 
     // this.tmdbService.getMovie().pipe(switchMap(x => {
@@ -53,12 +42,12 @@ export class HomeComponent implements OnInit {
     //   this.movie = movie;  
     //   this.imageSrc = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;    
     // })
-    
+
 
     // console.log(this.movie.id);
-    
+
     // timer(1000).subscribe(x => {  })    
-    
+
   }
 
   // // Chama o serviço que obtem o ultimo filme

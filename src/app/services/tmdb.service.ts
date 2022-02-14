@@ -9,10 +9,11 @@ import { config } from 'config'
 @Injectable({
   providedIn: 'root'
 })
+
 export class TmdbService {
-  
+
   url = "https://api.themoviedb.org/3/movie";
-  url_discover =   "https://api.themoviedb.org/3/discover/movie";
+  url_discover = "https://api.themoviedb.org/3/discover/movie";
   API_KEY = config.TMDB_API_KEY;
 
   movies: Movie[] = [];
@@ -24,7 +25,7 @@ export class TmdbService {
   // Headers
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  }  
+  }
 
   // Obtem o ultimo filme adicionado
   // getLatestMovieId(){
@@ -36,9 +37,10 @@ export class TmdbService {
   //     )
   // }
 
+  // Gera um integer aleatorio
   randomInteger(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
-  }  
+  }
 
   // Obtem o ultimo filme adicionado
   getLatestMovieId(): Observable<Movie> {
@@ -46,28 +48,27 @@ export class TmdbService {
       .pipe(
         retry(2),
         catchError(this.handleError))
-  } 
+  }
 
-  async getMovie(){    
-    var pageRandom = this.randomInteger(1, 500);   
+  async getMovie() {
+    var pageRandom = this.randomInteger(1, 500);
     var voteRandom = this.genRand(0, 9, 2);
-    let data = await this.getMoviesDiscoverList(pageRandom, voteRandom).toPromise();    
-    var movieRandom = this.randomInteger(0, 19);      
-    this.movies.splice(0, this.movies.length);      
-    // let dataReturn = {} as Movie[];
+    let data = await this.getMoviesDiscoverList(pageRandom, voteRandom).toPromise();
+    var movieRandom = this.randomInteger(0, 19);
+    this.movies.splice(0, this.movies.length);
 
-    for(let i=0; i < movieRandom; i++){
-      if(this.movies.length < 2){
-        if(data.results[i].poster_path != null){
-          this.movies.push(data.results[i]);                    
+    for (let i = 0; i < movieRandom; i++) {
+      if (this.movies.length < 2) {
+        if (data.results[i].poster_path != null) {
+          this.movies.push(data.results[i]);
         }
       }
-      else if(this.movies.length == 2){
+      else if (this.movies.length == 2) {
         return this.movies;
       }
-      else{
+      else {
         this.getMovie();
-      }      
+      }
     }
     return this.movies;
   }
@@ -78,8 +79,8 @@ export class TmdbService {
       .pipe(
         retry(2),
         catchError(this.handleError))
-  }   
-  
+  }
+
   // getMovie(id: number, latestId: number): Observable<Movie> {
   //   return of(this.url).pipe(
   //     switchMap(url => this.httpClient.get<Movie>(
@@ -105,26 +106,26 @@ export class TmdbService {
   //   )
   // }  
 
-// getMovie(id: number, latestId: number): Observable<Movie> {
-//     var id2 = id;
-//     return this.httpClient.get<Movie>(`${this.url}/${id2}?api_key=${this.API_KEY}&language=en-US`)
-//       .pipe(      
-//         map(result => {
-//           if(result.poster_path == null){
-//             console.log("oie2");             
-//             throw new Error();
-//           }
-//           return result;
-//         }),
-//         retryWhen((error) => {
-//           console.log("kkk");       
-//           return error.pipe(
-//             tap(() => id = this.randomInteger(0, latestId)),
-//             take(3)            
-//           )
-//         })
-//       )         
-//   }    
+  // getMovie(id: number, latestId: number): Observable<Movie> {
+  //     var id2 = id;
+  //     return this.httpClient.get<Movie>(`${this.url}/${id2}?api_key=${this.API_KEY}&language=en-US`)
+  //       .pipe(      
+  //         map(result => {
+  //           if(result.poster_path == null){
+  //             console.log("oie2");             
+  //             throw new Error();
+  //           }
+  //           return result;
+  //         }),
+  //         retryWhen((error) => {
+  //           console.log("kkk");       
+  //           return error.pipe(
+  //             tap(() => id = this.randomInteger(0, latestId)),
+  //             take(3)            
+  //           )
+  //         })
+  //       )         
+  //   }    
 
   // Manipulação de erros
   handleError(error: HttpErrorResponse) {
@@ -140,10 +141,10 @@ export class TmdbService {
     return throwError(errorMessage);
   };
 
-  genRand(min: number, max: number, decimalPlaces: number) {  
-    var rand = Math.random()*(max-min) + min;
+  genRand(min: number, max: number, decimalPlaces: number) {
+    var rand = Math.random() * (max - min) + min;
     var power = Math.pow(10, decimalPlaces);
-    return Math.floor(rand*power) / power;
+    return Math.floor(rand * power) / power;
   }
 
 
