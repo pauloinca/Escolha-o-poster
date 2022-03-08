@@ -1,15 +1,25 @@
 <div class="main-div">
-    <div class="card">
-      <div class="img-wrapper">
-        <img [src]="image1Src" alt="Avatar">
+  <div class="card" (click)="card1Clicked()" [@cardFlip]="data1.state">
+    <div class="img-wrapper">
+      <div class="face back">
+        <img src="../../assets/images/back-card.png" />
       </div>
-    </div>  
-    <div class="card">
-      <div class="img-wrapper">
-        <img [src]="image2Src" alt="Avatar">
+      <div class="face front">
+        <img [src]="image1Src" />
       </div>
-    </div>  
+    </div>
+  </div>
+  <div class="card" (click)="card2Clicked()" [@cardFlip]="data2.state">
+    <div class="img-wrapper">
+      <div class="face back">
+        <img src="../../assets/images/back-card.png" />
+      </div>
+      <div class="face front">
+        <img [src]="image2Src" />
+      </div>
+    </div>
+  </div>
+
+  <!-- The routed views render in the <router-outlet>-->
+  <router-outlet></router-outlet>
 </div>
-  
-<!-- The routed views render in the <router-outlet>-->
-<router-outlet></router-outlet>

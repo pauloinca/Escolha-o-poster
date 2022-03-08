@@ -51,13 +51,29 @@ export class TmdbService {
   }
 
   async getMovie() {
-    var pageRandom = this.randomInteger(1, 500);
-    var voteRandom = this.genRand(0, 9, 2);
-    let data = await this.getMoviesDiscoverList(pageRandom, voteRandom).toPromise();
-    var movieRandom = this.randomInteger(0, 19);
-    this.movies.splice(0, this.movies.length);
 
-    for (let i = 0; i < movieRandom; i++) {
+    // console.log("data: " + JSON.stringify(data.results));
+    // var movieRandom = this.randomInteger(0, 19);
+    // console.log(data.results);
+    // console.log(movieRandom);
+    this.movies.splice(0, this.movies.length); // Limpo o Array movies
+    // console.log(this.movies);
+
+    let i = 0;
+    // Cada pagina possui 20 filmes (do 0 ao 19)
+    while (this.movies.length != 1) {
+      if (i = 0) {
+        var pageRandom = this.randomInteger(1, 500);
+        var voteRandom = this.genRand(0, 9, 2);
+        let data = await this.getMoviesDiscoverList(pageRandom, voteRandom).toPromise();
+        if (data.results[i].poster_path != null) {
+          this.movies.push(data.results[i]);
+        }
+      }
+
+
+    }
+    for (let i = 0; i <= 19; i++) {
       if (this.movies.length < 2) {
         if (data.results[i].poster_path != null) {
           this.movies.push(data.results[i]);
@@ -69,6 +85,7 @@ export class TmdbService {
       else {
         this.getMovie();
       }
+
     }
     return this.movies;
   }
@@ -77,7 +94,7 @@ export class TmdbService {
   getMoviesDiscoverList(page: number, vote: number): Observable<MovieDiscover> {
     return this.httpClient.get<MovieDiscover>(`${this.url_discover}?api_key=${this.API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}&vote_average.gte=${vote}&with_watch_monetization_types=flatrate`)
       .pipe(
-        retry(2),
+        retry(5),
         catchError(this.handleError))
   }
 
